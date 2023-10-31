@@ -8,6 +8,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import { register } from "./controllers/auth";
+import authRoutes from "./routes/auth";
 
 //When we use type module we need to use following to use import keyword
 const __filename = fileURLToPath(import.meta.url);
@@ -30,6 +32,8 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
+// Multer is a node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/assets");
@@ -40,6 +44,15 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+//Routes with files
+
+app.post("/auth/register",upload.single("picture"),register);
+
+//Routes
+
+app.post("/auth",authRoutes);
+
 
 // Mongo Setup
 
