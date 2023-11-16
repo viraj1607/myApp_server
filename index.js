@@ -10,6 +10,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { register } from "./controllers/auth";
 import authRoutes from "./routes/auth";
+import usersRoutes from "./routes/users";
 
 //When we use type module we need to use following to use import keyword
 const __filename = fileURLToPath(import.meta.url);
@@ -51,7 +52,8 @@ app.post("/auth/register",upload.single("picture"),register);
 
 //Routes
 
-app.post("/auth",authRoutes);
+app.use("/auth",authRoutes);
+app.use("/users",usersRoutes);
 
 
 // Mongo Setup
